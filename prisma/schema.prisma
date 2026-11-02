@@ -1,0 +1,360 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  INSTANCE
+  ADMIN
+}
+
+enum ReportStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  VERIFIED
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+}
+
+enum NotificationType {
+  LIKE
+  COMMENT
+  REPLY
+  REPOST
+  UP
+  STATUS_CHANGE
+  OFFICIAL_RESPONSE
+  HOT_ALERT
+  INSTANCE_VERIFIED
+}
+
+enum FlagReason {
+  SPAM
+  MISINFORMATION
+  HATE_SPEECH
+  HARASSMENT
+  INAPPROPRIATE
+  OTHER
+}
+
+enum FlagStatus {
+  PENDING
+  RESOLVED
+  DISMISSED
+}
+
+model User {
+  id              String             @id @default(uuid())
+  email           String             @unique
+  passwordHash    String
+  username        String             @unique
+  name            String
+  role            Role               @default(USER)
+  avatarUrl       String?
+  bio             String?
+  phone           String?
+  isVerified      Boolean            @default(false)
+  isActive        Boolean            @default(true)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  instanceProfile InstanceProfile?
+  reports         Report[]           @relation("AuthorReports")
+  assignedReports Report[]           @relation("AssignedInstanceReports")
+  likes           Like[]
+  upvotes         Upvote[]
+  reposts         Repost[]
+  shares          Share[]
+  bookmarks       Bookmark[]
+  comments        Comment[]
+  notifications   Notification[]     @relation("UserNotifications")
+  sentNotifications Notification[]   @relation("ActorNotifications")
+  statusChanges   ReportStatusHistory[]
+  officialResponses OfficialResponse[]
+  contentReports  ContentReport[]    @relation("ReporterFlags")
+  auditLogs       AuditLog[]         @relation("ActorAuditLogs")
+
+  followers       Follow[]           @relation("UserFollowers")
+  following       Follow[]           @relation("UserFollowing")
+
+  @@index([username])
+  @@index([email])
+  @@index([role])
+}
+
+model InstanceProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instanceName    String
+  jurisdiction    String
+  categoryFocus   String?
+  officialAddress String?
+  websiteUrl      String?
+  verifiedAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  color       String   @default("#DC2626")
+  icon        String   @default("FolderAlert")
+  reports     Report[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Report {
+  id               String                @id @default(uuid())
+  title            String
+  description      String
+  status           ReportStatus          @default(SUBMITTED)
+  authorId         String
+  author           User                  @relation("AuthorReports", fields: [authorId], references: [id], onDelete: Cascade)
+  categoryId       String
+  category         Category              @relation(fields: [categoryId], references: [id])
+  targetInstanceId String?
+  targetInstance   User?                 @relation("AssignedInstanceReports", fields: [targetInstanceId], references: [id])
+  
+  address          String
+  latitude         Float
+  longitude        Float
+
+  likesCount       Int                   @default(0)
+  commentsCount    Int                   @default(0)
+  sharesCount      Int                   @default(0)
+  repostsCount     Int                   @default(0)
+  upsCount         Int                   @default(0)
+  hotScore         Float                 @default(0)
+  isHot            Boolean               @default(false)
+  hotAt            DateTime?
+
+  media            ReportMedia[]
+  likes            Like[]
+  upvotes          Upvote[]
+  reposts          Repost[]
+  shares           Share[]
+  bookmarks        Bookmark[]
+  comments         Comment[]
+  statusHistory    ReportStatusHistory[]
+  officialResponses OfficialResponse[]
+  contentReports   ContentReport[]
+
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([targetInstanceId])
+  @@index([isHot])
+  @@index([hotScore])
+  @@index([createdAt])
+}
+
+model ReportMedia {
+  id        String   @id @default(uuid())
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  url       String
+  type      String   @default("IMAGE")
+  createdAt DateTime @default(now())
+
+  @@index([reportId])
+}
+
+model ReportStatusHistory {
+  id           String       @id @default(uuid())
+  reportId     String
+  report       Report       @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  status       ReportStatus
+  notes        String
+  evidenceUrls String[]     @default([])
+  changedById  String
+  changedBy    User         @relation(fields: [changedById], references: [id])
+  createdAt    DateTime     @default(now())
+
+  @@index([reportId])
+  @@index([changedById])
+}
+
+model OfficialResponse {
+  id             String   @id @default(uuid())
+  reportId       String
+  report         Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  instanceId     String
+  instance       User     @relation(fields: [instanceId], references: [id])
+  content        String
+  attachmentUrls String[] @default([])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([reportId])
+  @@index([instanceId])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reportId])
+  @@index([reportId])
+  @@index([userId])
+}
+
+model Upvote {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reportId])
+  @@index([reportId])
+  @@index([userId])
+}
+
+model Repost {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reportId])
+  @@index([reportId])
+  @@index([userId])
+}
+
+model Share {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  platform  String   @default("DIRECT")
+  createdAt DateTime @default(now())
+
+  @@index([reportId])
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reportId])
+  @@index([userId])
+}
+
+model Comment {
+  id             String          @id @default(uuid())
+  reportId       String
+  report         Report          @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content        String
+  parentId       String?
+  parent         Comment?        @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies        Comment[]       @relation("CommentReplies")
+  contentReports ContentReport[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([reportId])
+  @@index([authorId])
+  @@index([parentId])
+}
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  follower    User     @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User     @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  actorId   String?
+  actor     User?            @relation("ActorNotifications", fields: [actorId], references: [id], onDelete: SetNull)
+  type      NotificationType
+  reportId  String?
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+}
+
+model ContentReport {
+  id          String     @id @default(uuid())
+  reporterId  String
+  reporter    User       @relation("ReporterFlags", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportId    String?
+  report      Report?    @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  commentId   String?
+  comment     Comment?   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reason      FlagReason
+  description String?
+  status      FlagStatus @default(PENDING)
+  actionTaken String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([status])
+  @@index([reportId])
+  @@index([commentId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?
+  actor     User?    @relation("ActorAuditLogs", fields: [actorId], references: [id], onDelete: SetNull)
+  action    String
+  resource  String
+  targetId  String?
+  details   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model SystemSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

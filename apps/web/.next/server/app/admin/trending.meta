@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/trending/layout,_N_T_/admin/trending/page,_N_T_/admin/trending"
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/3b303f7156a265edba3cc0e7a64deb6519719b16d0e092ac3e4038dba8068572/$/admin/trending",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/admin/trending/page"
+    },
+    "isFallback": false
+  }
+}
