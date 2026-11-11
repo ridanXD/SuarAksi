@@ -22,16 +22,16 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center py-12 px-4 text-center rounded-lg bg-white border border-dashed border-surface-300",
+        "flex flex-col items-center justify-center py-12 px-4 text-center rounded-2xl bg-white dark:bg-black border border-dashed border-surface-200 dark:border-surface-800 transition-colors",
         className
       )}
     >
-      <div className="w-12 h-12 rounded-full bg-surface-100 text-surface-500 flex items-center justify-center mb-3">
+      <div className="w-12 h-12 rounded-full bg-surface-100 dark:bg-surface-900 text-surface-500 dark:text-surface-400 flex items-center justify-center mb-3">
         {icon || <FolderOpen className="w-6 h-6" />}
       </div>
-      <h3 className="text-base font-semibold text-surface-900 mb-1">{title}</h3>
+      <h3 className="text-base font-bold text-surface-900 dark:text-white mb-1">{title}</h3>
       {description && (
-        <p className="text-sm text-surface-500 max-w-sm mb-4">{description}</p>
+        <p className="text-sm text-surface-500 dark:text-surface-400 max-w-sm mb-4 leading-relaxed">{description}</p>
       )}
       {action && <div>{action}</div>}
     </div>

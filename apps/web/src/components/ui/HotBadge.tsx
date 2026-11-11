@@ -14,11 +14,11 @@ export function HotBadge({ className, score }: HotBadgeProps) {
     <span
       title={score ? `Hot Score: ${Math.round(score)}` : "Mendapat atensi tinggi dari publik"}
       className={cn(
-        "inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold bg-crimson-100 text-crimson-800 border border-crimson-200 shrink-0",
+        "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-crimson-100 dark:bg-crimson-950/50 text-crimson-700 dark:text-crimson-400 border border-crimson-200 dark:border-crimson-800 shrink-0",
         className
       )}
     >
-      <Flame className="w-3.5 h-3.5 fill-crimson-600 text-crimson-600" />
+      <Flame className="w-3.5 h-3.5 fill-crimson-600 text-crimson-600 dark:fill-crimson-400 dark:text-crimson-400" />
       <span>HOT</span>
     </span>
   );

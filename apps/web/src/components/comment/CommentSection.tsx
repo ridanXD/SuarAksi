@@ -33,7 +33,7 @@ export function CommentSection({ reportId }: CommentSectionProps) {
     setComments((prev) => [...prev, newComment]);
   };
 
-  const handleReplyAdded = (reply: CommentData) => {
+  const handleReplyAdded = () => {
     fetchComments();
   };
 
@@ -42,10 +42,10 @@ export function CommentSection({ reportId }: CommentSectionProps) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-surface-200 p-5 space-y-6">
-      <div className="flex items-center gap-2 pb-3 border-b border-surface-100">
+    <div className="bg-white dark:bg-black rounded-2xl border border-surface-200 dark:border-surface-800 p-5 space-y-6 transition-colors">
+      <div className="flex items-center gap-2 pb-3 border-b border-surface-100 dark:border-surface-800">
         <MessageSquare className="w-4 h-4 text-crimson-600" />
-        <h3 className="text-sm font-bold text-surface-900">
+        <h3 className="text-sm font-bold text-surface-900 dark:text-white">
           Diskusi Masyarakat ({comments.length})
         </h3>
       </div>
@@ -54,11 +54,11 @@ export function CommentSection({ reportId }: CommentSectionProps) {
 
       {isLoading ? (
         <div className="space-y-4 pt-2">
-          <Skeleton className="h-16 w-full" />
-          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full rounded-xl" />
+          <Skeleton className="h-16 w-full rounded-xl" />
         </div>
       ) : comments.length === 0 ? (
-        <div className="py-8 text-center text-xs text-surface-400">
+        <div className="py-8 text-center text-xs text-surface-400 dark:text-surface-500">
           Belum ada komentar. Jadilah yang pertama memberikan tanggapan!
         </div>
       ) : (

@@ -34,19 +34,19 @@ export default function BookmarksPage() {
 
   return (
     <AppLayout>
-      <div className="border-b border-surface-200 bg-white sticky top-0 z-20 p-4 space-y-1">
+      <div className="border-b border-surface-200 dark:border-surface-800 bg-white/85 dark:bg-black/85 backdrop-blur-md sticky top-[53px] z-20 p-4 space-y-1 select-none transition-colors">
         <div className="flex items-center gap-2">
           <Bookmark className="w-5 h-5 text-blue-600 fill-blue-600" />
-          <h1 className="text-base font-black text-surface-900 tracking-tight">
+          <h1 className="text-base font-black text-surface-900 dark:text-white tracking-tight">
             Laporan Tersimpan
           </h1>
         </div>
-        <p className="text-xs text-surface-500">
+        <p className="text-xs text-surface-500 dark:text-surface-400">
           Koleksi laporan yang Anda simpan untuk dipantau perkembangannya
         </p>
       </div>
 
-      <div>
+      <div className="divide-y divide-surface-200 dark:divide-surface-800 bg-white dark:bg-black transition-colors">
         {isLoading ? (
           <div>
             <ReportCardSkeleton />

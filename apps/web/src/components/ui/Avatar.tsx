@@ -33,7 +33,7 @@ export function Avatar({ src, name, size = "md", className }: AvatarProps) {
     return (
       <div
         className={cn(
-          "rounded-full bg-surface-200 text-surface-700 font-semibold flex items-center justify-center shrink-0 border border-surface-300 select-none",
+          "rounded-full bg-surface-200 dark:bg-surface-800 text-surface-700 dark:text-surface-200 font-bold flex items-center justify-center shrink-0 border border-surface-300 dark:border-surface-700 select-none",
           sizeClasses[size],
           className
         )}
@@ -53,7 +53,7 @@ export function Avatar({ src, name, size = "md", className }: AvatarProps) {
   return (
     <div
       className={cn(
-        "relative rounded-full overflow-hidden shrink-0 border border-surface-200 bg-surface-100",
+        "relative rounded-full overflow-hidden shrink-0 border border-surface-200 dark:border-surface-800 bg-surface-100 dark:bg-surface-900",
         sizeClasses[size],
         className
       )}

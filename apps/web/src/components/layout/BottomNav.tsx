@@ -31,7 +31,7 @@ export function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-surface-200 lg:hidden px-4 py-2 flex items-center justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-black/90 backdrop-blur-md border-t border-surface-200 dark:border-surface-800 lg:hidden px-4 py-2 flex items-center justify-around transition-colors">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
         const Icon = item.icon;
@@ -53,8 +53,8 @@ export function BottomNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex flex-col items-center gap-0.5 text-[10px] font-medium py-1 px-3 relative",
-              isActive ? "text-crimson-600 font-bold" : "text-surface-500"
+              "flex flex-col items-center gap-0.5 text-[10px] font-medium py-1 px-3 relative transition-colors",
+              isActive ? "text-crimson-600 dark:text-crimson-400 font-bold" : "text-surface-500 dark:text-surface-400"
             )}
           >
             <Icon className="w-5 h-5" />

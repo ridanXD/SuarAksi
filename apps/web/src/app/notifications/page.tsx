@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Bell,
@@ -15,7 +14,6 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -78,15 +76,15 @@ export default function NotificationsPage() {
         return <ArrowBigUp className="w-4 h-4 fill-crimson-600 text-crimson-600" />;
       case "COMMENT":
       case "REPLY":
-        return <MessageSquare className="w-4 h-4 text-blue-600" />;
+        return <MessageSquare className="w-4 h-4 text-blue-500" />;
       case "REPOST":
-        return <Repeat2 className="w-4 h-4 text-emerald-600" />;
+        return <Repeat2 className="w-4 h-4 text-emerald-500" />;
       case "STATUS_CHANGE":
-        return <ShieldAlert className="w-4 h-4 text-orange-600" />;
+        return <ShieldAlert className="w-4 h-4 text-orange-500" />;
       case "OFFICIAL_RESPONSE":
-        return <Building2 className="w-4 h-4 text-blue-600" />;
+        return <Building2 className="w-4 h-4 text-blue-500" />;
       case "INSTANCE_VERIFIED":
-        return <CheckCircle className="w-4 h-4 text-emerald-600" />;
+        return <CheckCircle className="w-4 h-4 text-emerald-500" />;
       default:
         return <Bell className="w-4 h-4 text-surface-500" />;
     }
@@ -94,12 +92,12 @@ export default function NotificationsPage() {
 
   return (
     <AppLayout>
-      <div className="border-b border-surface-200 bg-white sticky top-0 z-20 p-4 flex items-center justify-between">
+      <div className="border-b border-surface-200 dark:border-surface-800 bg-white/85 dark:bg-black/85 backdrop-blur-md sticky top-[53px] z-20 p-4 flex items-center justify-between select-none transition-colors">
         <div>
-          <h1 className="text-base font-black text-surface-900 tracking-tight">
+          <h1 className="text-base font-black text-surface-900 dark:text-white tracking-tight">
             Notifikasi
           </h1>
-          <p className="text-xs text-surface-500">
+          <p className="text-xs text-surface-500 dark:text-surface-400">
             Pemberitahuan aktivitas, dukungan warga, dan pembaruan dari pemerintah
           </p>
         </div>
@@ -108,19 +106,19 @@ export default function NotificationsPage() {
           variant="outline"
           size="sm"
           onClick={handleMarkAllRead}
-          className="gap-1 text-xs"
+          className="rounded-full gap-1.5 text-xs font-semibold"
         >
           <CheckCheck className="w-3.5 h-3.5" />
           <span>Tandai Semua Dibaca</span>
         </Button>
       </div>
 
-      <div>
+      <div className="divide-y divide-surface-200 dark:divide-surface-800 bg-white dark:bg-black transition-colors">
         {isLoading ? (
           <div className="p-4 space-y-3">
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full rounded-2xl" />
+            <Skeleton className="h-16 w-full rounded-2xl" />
+            <Skeleton className="h-16 w-full rounded-2xl" />
           </div>
         ) : notifications.length === 0 ? (
           <div className="p-8">
@@ -131,26 +129,26 @@ export default function NotificationsPage() {
             />
           </div>
         ) : (
-          <div className="divide-y divide-surface-100">
+          <div>
             {notifications.map((notif) => (
               <div
                 key={notif.id}
                 onClick={() => handleNotificationClick(notif)}
-                className={`p-4 flex items-start gap-3 hover:bg-surface-50/80 transition-colors cursor-pointer ${
-                  !notif.isRead ? "bg-crimson-50/20" : ""
+                className={`p-4 flex items-start gap-3 hover:bg-surface-50/80 dark:hover:bg-surface-900/40 transition-colors cursor-pointer border-b border-surface-100 dark:border-surface-800/60 ${
+                  !notif.isRead ? "bg-crimson-50/20 dark:bg-crimson-950/20" : ""
                 }`}
               >
                 <div className="pt-0.5">{getNotifIcon(notif.type)}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs font-bold text-surface-900">
+                    <p className="text-xs font-bold text-surface-900 dark:text-white">
                       {notif.title}
                     </p>
-                    <span className="text-[11px] text-surface-400 whitespace-nowrap">
+                    <span className="text-[11px] text-surface-400 dark:text-surface-500 whitespace-nowrap">
                       {timeAgo(notif.createdAt)}
                     </span>
                   </div>
-                  <p className="text-xs text-surface-600 mt-0.5 leading-relaxed">
+                  <p className="text-xs text-surface-600 dark:text-surface-300 mt-0.5 leading-relaxed">
                     {notif.message}
                   </p>
                 </div>

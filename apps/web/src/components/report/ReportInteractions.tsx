@@ -151,25 +151,27 @@ export function ReportInteractions({
     <>
       <div
         className={cn(
-          "flex items-center justify-between text-surface-500 pt-2 border-t border-surface-100",
+          "flex items-center justify-between text-surface-500 dark:text-surface-400 pt-1 -ml-2 max-w-md",
           className
         )}
       >
         <button
           type="button"
           onClick={handleUpvote}
-          title="Berikan UP untuk mendorong prioritas penanganan"
+          title="Berikan UP untuk prioritas penanganan"
           className={cn(
-            "group flex items-center gap-1.5 py-1 px-2 rounded hover:bg-crimson-50 transition-colors text-xs font-semibold",
-            hasUpvoted ? "text-crimson-600 bg-crimson-50/80" : "hover:text-crimson-600"
+            "group flex items-center gap-1 text-xs transition-colors cursor-pointer",
+            hasUpvoted ? "text-crimson-600 dark:text-crimson-400 font-bold" : "hover:text-crimson-600 dark:hover:text-crimson-400"
           )}
         >
-          <ArrowBigUp
-            className={cn(
-              "w-5 h-5 transition-transform group-hover:-translate-y-0.5",
-              hasUpvoted && "fill-crimson-600 text-crimson-600"
-            )}
-          />
+          <div className="p-1.5 rounded-full group-hover:bg-crimson-500/10 transition-colors">
+            <ArrowBigUp
+              className={cn(
+                "w-4 h-4 transition-transform group-hover:-translate-y-0.5",
+                hasUpvoted && "fill-crimson-600 dark:fill-crimson-400 text-crimson-600 dark:text-crimson-400"
+              )}
+            />
+          </div>
           <span>{formatCompactNumber(upsCount)} UP</span>
         </button>
 
@@ -183,9 +185,11 @@ export function ReportInteractions({
               router.push(`/reports/${reportId}`);
             }
           }}
-          className="group flex items-center gap-1.5 py-1 px-2 rounded hover:bg-blue-50 hover:text-blue-600 transition-colors text-xs"
+          className="group flex items-center gap-1 text-xs hover:text-blue-500 transition-colors cursor-pointer"
         >
-          <MessageSquare className="w-4 h-4 transition-transform group-hover:scale-110" />
+          <div className="p-1.5 rounded-full group-hover:bg-blue-500/10 transition-colors">
+            <MessageSquare className="w-4 h-4 transition-transform group-hover:scale-110" />
+          </div>
           <span>{formatCompactNumber(commentsCount)}</span>
         </button>
 
@@ -193,11 +197,13 @@ export function ReportInteractions({
           type="button"
           onClick={handleRepost}
           className={cn(
-            "group flex items-center gap-1.5 py-1 px-2 rounded hover:bg-emerald-50 transition-colors text-xs",
-            hasReposted ? "text-emerald-600" : "hover:text-emerald-600"
+            "group flex items-center gap-1 text-xs transition-colors cursor-pointer",
+            hasReposted ? "text-emerald-500 font-bold" : "hover:text-emerald-500"
           )}
         >
-          <Repeat2 className="w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
+          <div className="p-1.5 rounded-full group-hover:bg-emerald-500/10 transition-colors">
+            <Repeat2 className="w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
+          </div>
           <span>{formatCompactNumber(repostsCount)}</span>
         </button>
 
@@ -205,39 +211,40 @@ export function ReportInteractions({
           type="button"
           onClick={handleLike}
           className={cn(
-            "group flex items-center gap-1.5 py-1 px-2 rounded hover:bg-rose-50 transition-colors text-xs",
-            hasLiked ? "text-rose-600" : "hover:text-rose-600"
+            "group flex items-center gap-1 text-xs transition-colors cursor-pointer",
+            hasLiked ? "text-rose-500 font-bold" : "hover:text-rose-500"
           )}
         >
-          <Heart
-            className={cn(
-              "w-4 h-4 transition-transform group-hover:scale-110",
-              hasLiked && "fill-rose-600 text-rose-600"
-            )}
-          />
+          <div className="p-1.5 rounded-full group-hover:bg-rose-500/10 transition-colors">
+            <Heart
+              className={cn(
+                "w-4 h-4 transition-transform group-hover:scale-110",
+                hasLiked && "fill-rose-500 text-rose-500"
+              )}
+            />
+          </div>
           <span>{formatCompactNumber(likesCount)}</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={handleShareClick}
-          className="group flex items-center gap-1.5 py-1 px-2 rounded hover:bg-surface-100 hover:text-surface-800 transition-colors text-xs"
-        >
-          <Share2 className="w-4 h-4 transition-transform group-hover:scale-110" />
-          <span>{formatCompactNumber(sharesCount)}</span>
         </button>
 
         <button
           type="button"
           onClick={handleBookmark}
           className={cn(
-            "p-1.5 rounded hover:bg-surface-100 transition-colors",
-            hasBookmarked ? "text-blue-600" : "hover:text-surface-800"
+            "group p-1.5 rounded-full hover:bg-blue-500/10 transition-colors cursor-pointer",
+            hasBookmarked ? "text-blue-500" : "hover:text-blue-500"
           )}
         >
           <Bookmark
-            className={cn("w-4 h-4", hasBookmarked && "fill-blue-600 text-blue-600")}
+            className={cn("w-4 h-4", hasBookmarked && "fill-blue-500 text-blue-500")}
           />
+        </button>
+
+        <button
+          type="button"
+          onClick={handleShareClick}
+          className="group p-1.5 rounded-full hover:text-blue-500 hover:bg-blue-500/10 transition-colors cursor-pointer"
+        >
+          <Share2 className="w-4 h-4 transition-transform group-hover:scale-110" />
         </button>
       </div>
 

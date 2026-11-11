@@ -20,12 +20,12 @@ export function CommentForm({ reportId, onCommentCreated }: CommentFormProps) {
 
   if (!user) {
     return (
-      <div className="p-4 rounded-lg bg-surface-50 border border-surface-200 text-center space-y-2">
-        <p className="text-xs text-surface-600">
+      <div className="p-4 rounded-xl bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-800 text-center space-y-2">
+        <p className="text-xs text-surface-600 dark:text-surface-400">
           Masuk ke akun Anda untuk bergabung dalam diskusi warga.
         </p>
         <Link href="/login">
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" className="rounded-full">
             Masuk / Buat Akun
           </Button>
         </Link>
@@ -58,8 +58,8 @@ export function CommentForm({ reportId, onCommentCreated }: CommentFormProps) {
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Tuliskan tanggapan atau informasi tambahan terkait laporan ini..."
-          className="w-full text-xs rounded-md border border-surface-300 p-2.5 focus:border-crimson-600 focus:outline-none focus:ring-1 focus:ring-crimson-600 resize-none min-h-[64px]"
+          placeholder="Tuliskan tanggapan atau informasi tambahan..."
+          className="w-full text-xs rounded-xl border border-surface-300 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white placeholder:text-surface-400 dark:placeholder:text-surface-500 p-3 focus:border-crimson-600 focus:outline-none focus:ring-1 focus:ring-crimson-600 resize-none min-h-[64px] transition-colors"
         />
         <div className="flex justify-end">
           <Button
@@ -67,6 +67,7 @@ export function CommentForm({ reportId, onCommentCreated }: CommentFormProps) {
             type="submit"
             disabled={!content.trim()}
             isLoading={isSubmitting}
+            className="rounded-full font-bold px-4"
           >
             <Send className="w-3.5 h-3.5 mr-1.5" />
             <span>Kirim Komentar</span>

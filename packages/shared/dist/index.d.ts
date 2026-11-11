@@ -249,6 +249,7 @@ export interface UserSummary {
     name: string;
     username: string;
     email?: string;
+    bio?: string | null;
     role: Role;
     avatarUrl?: string | null;
     isVerified?: boolean;

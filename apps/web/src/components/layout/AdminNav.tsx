@@ -16,6 +16,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "../ui/ThemeToggle";
 
 export function AdminNav() {
   const pathname = usePathname();
@@ -33,27 +34,31 @@ export function AdminNav() {
   ];
 
   return (
-    <div className="bg-white border-b border-surface-200 sticky top-0 z-20">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div className="bg-white dark:bg-black border-b border-surface-200 dark:border-surface-800 sticky top-0 z-20 transition-colors">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href="/feed">
-            <button className="p-1.5 rounded-full hover:bg-surface-100 text-surface-600 transition-colors" title="Kembali ke feed">
+            <button className="p-1.5 rounded-full hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 transition-colors cursor-pointer" title="Kembali ke feed">
               <ArrowLeft className="w-5 h-5" />
             </button>
           </Link>
           <div>
-            <h1 className="text-base font-black text-purple-900 tracking-tight flex items-center gap-2">
+            <h1 className="text-base font-black text-purple-900 dark:text-purple-300 tracking-tight flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-purple-600" />
               <span>Administrator Portal SuarAksi</span>
             </h1>
-            <p className="text-[11px] text-surface-500">
+            <p className="text-[11px] text-surface-500 dark:text-surface-400">
               Pengelolaan akun, verifikasi instansi, moderasi, dan audit platform
             </p>
           </div>
         </div>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+        </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 flex items-center gap-1 overflow-x-auto text-xs font-semibold pb-1">
+      <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center gap-1 overflow-x-auto text-xs font-semibold pb-1">
         {links.map((link) => {
           const isActive = pathname === link.href;
           const Icon = link.icon;
@@ -64,8 +69,8 @@ export function AdminNav() {
               className={cn(
                 "flex items-center gap-1.5 px-3 py-2 rounded-t-lg shrink-0 border-b-2 transition-colors",
                 isActive
-                  ? "border-purple-600 text-purple-800 bg-purple-50/50"
-                  : "border-transparent text-surface-600 hover:text-surface-900 hover:bg-surface-50"
+                  ? "border-purple-600 text-purple-800 dark:text-purple-300 bg-purple-50/50 dark:bg-purple-950/30"
+                  : "border-transparent text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-50 dark:hover:bg-surface-900"
               )}
             >
               <Icon className="w-4 h-4" />

@@ -33,6 +33,7 @@ export interface CurrentUser {
 
 interface AuthContextType {
   user: CurrentUser | null;
+  setUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>;
   token: string | null;
   isLoading: boolean;
   login: (credentials: any) => Promise<CurrentUser>;
@@ -100,6 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         token,
         isLoading,
         login,

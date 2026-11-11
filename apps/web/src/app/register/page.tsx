@@ -7,7 +7,9 @@ import { Megaphone, Lock, Mail, User, Building2, Phone, MapPin, ArrowRight } fro
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Role } from "@suaraksi/shared";
+import { cn } from "@/lib/utils";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -55,50 +57,56 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white rounded-2xl border border-surface-200 shadow-sm p-6 sm:p-8 space-y-6">
+    <div className="min-h-screen bg-surface-50 dark:bg-black flex items-center justify-center p-4 transition-colors relative">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
+      <div className="w-full max-w-lg bg-white dark:bg-surface-900 rounded-3xl border border-surface-200 dark:border-surface-800 shadow-xl p-6 sm:p-8 space-y-6 transition-colors">
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-crimson-600 flex items-center justify-center text-white shadow-sm">
+            <div className="w-9 h-9 rounded-full bg-crimson-600 flex items-center justify-center text-white shadow-sm">
               <Megaphone className="w-5 h-5" />
             </div>
-            <span className="text-xl font-black text-surface-900">
+            <span className="text-xl font-black text-surface-900 dark:text-white">
               Suar<span className="text-crimson-600">Aksi</span>
             </span>
           </Link>
-          <h1 className="text-lg font-bold text-surface-900 pt-2">Buat Akun SuarAksi</h1>
-          <p className="text-xs text-surface-500">
+          <h1 className="text-lg font-bold text-surface-900 dark:text-white pt-2">Buat Akun SuarAksi</h1>
+          <p className="text-xs text-surface-500 dark:text-surface-400">
             Bergabunglah dalam gerakan keterbukaan informasi dan perbaikan fasilitas publik
           </p>
         </div>
 
-        <div className="grid grid-cols-2 p-1 bg-surface-100 rounded-lg">
+        <div className="grid grid-cols-2 p-1 bg-surface-100 dark:bg-surface-800 rounded-2xl">
           <button
             type="button"
             onClick={() => setRole(Role.USER)}
-            className={`py-2 text-xs font-semibold rounded-md transition-all ${
+            className={cn(
+              "py-2 text-xs font-bold rounded-xl transition-all cursor-pointer",
               role === Role.USER
-                ? "bg-white text-surface-900 shadow-sm"
-                : "text-surface-600 hover:text-surface-900"
-            }`}
+                ? "bg-white dark:bg-surface-900 text-surface-900 dark:text-white shadow-xs"
+                : "text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white"
+            )}
           >
             Masyarakat Umum
           </button>
           <button
             type="button"
             onClick={() => setRole(Role.INSTANCE)}
-            className={`py-2 text-xs font-semibold rounded-md transition-all ${
+            className={cn(
+              "py-2 text-xs font-bold rounded-xl transition-all cursor-pointer",
               role === Role.INSTANCE
-                ? "bg-white text-surface-900 shadow-sm"
-                : "text-surface-600 hover:text-surface-900"
-            }`}
+                ? "bg-white dark:bg-surface-900 text-surface-900 dark:text-white shadow-xs"
+                : "text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white"
+            )}
           >
             Instansi Pemerintah
           </button>
         </div>
 
         {error && (
-          <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">
+          <div className="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-xs text-red-700 dark:text-red-300">
             {error}
           </div>
         )}
@@ -145,8 +153,8 @@ export default function RegisterPage() {
           />
 
           {role === Role.INSTANCE && (
-            <div className="space-y-4 pt-2 border-t border-surface-100">
-              <span className="text-[11px] font-bold text-surface-500 uppercase tracking-wider block">
+            <div className="space-y-4 pt-2 border-t border-surface-100 dark:border-surface-800">
+              <span className="text-[11px] font-bold text-surface-500 dark:text-surface-400 uppercase tracking-wider block">
                 Data Legalitas Instansi:
               </span>
 
@@ -177,21 +185,21 @@ export default function RegisterPage() {
                 />
               </div>
 
-              <p className="text-[11px] text-surface-500 leading-normal bg-blue-50 p-2.5 rounded border border-blue-100">
+              <p className="text-[11px] text-surface-600 dark:text-surface-300 leading-normal bg-blue-50 dark:bg-blue-950/40 p-3 rounded-2xl border border-blue-100 dark:border-blue-900">
                 Pendaftaran akun instansi akan diverifikasi oleh tim Administrator SuarAksi untuk mendapatkan badge resmi terverifikasi.
               </p>
             </div>
           )}
 
-          <Button type="submit" className="w-full h-11" isLoading={isLoading}>
+          <Button type="submit" className="w-full h-11 rounded-full font-bold" isLoading={isLoading}>
             <span>Daftar Akun Sekarang</span>
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </form>
 
-        <p className="text-center text-xs text-surface-500">
+        <p className="text-center text-xs text-surface-500 dark:text-surface-400">
           Sudah memiliki akun?{" "}
-          <Link href="/login" className="font-semibold text-crimson-600 hover:underline">
+          <Link href="/login" className="font-semibold text-crimson-600 dark:text-crimson-400 hover:underline">
             Masuk di sini
           </Link>
         </p>

@@ -9,7 +9,6 @@ import {
   MapPin,
   Eye,
   Send,
-  Building2,
   AlertCircle,
   ArrowLeft,
 } from "lucide-react";
@@ -126,31 +125,31 @@ export default function CreateReportPage() {
 
   return (
     <AppLayout showRightSidebar={false}>
-      <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6">
-        <div className="flex items-center gap-3 pb-3 border-b border-surface-200">
+      <div className="w-full p-4 sm:p-6 lg:p-8 space-y-6">
+        <div className="flex items-center gap-3 pb-3 border-b border-surface-200 dark:border-surface-800">
           <button
             type="button"
             onClick={() => router.back()}
-            className="p-1.5 rounded-full hover:bg-surface-100 text-surface-600 transition-colors"
+            className="p-2 rounded-full hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-lg font-bold text-surface-900">Buat Laporan Warga</h1>
-            <p className="text-xs text-surface-500">
+            <h1 className="text-lg font-bold text-surface-900 dark:text-white">Buat Laporan Warga</h1>
+            <p className="text-xs text-surface-500 dark:text-surface-400">
               Sampaikan fakta kejadian dengan bukti yang jelas untuk percepatan tindak lanjut
             </p>
           </div>
         </div>
 
         {error && (
-          <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+          <div className="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-xs text-red-700 dark:text-red-300 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-xl border border-surface-200 p-5 sm:p-6">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-black rounded-2xl border border-surface-200 dark:border-surface-800 p-5 sm:p-6 transition-colors">
           <div className="space-y-4">
             <Input
               label="Judul Laporan"
@@ -183,30 +182,31 @@ export default function CreateReportPage() {
             </div>
 
             <Textarea
-              label="Deskripsi Kejadian / Masalah"
-              placeholder="Jelaskan secara rinci kondisi masalah, sudah berapa lama terjadi, dampak yang ditimbulkan terhadap warga sekitar, dan harapan penanganannya..."
+              label="Deskripsi Detail Masalah"
+              placeholder="Jelaskan secara kronologis apa masalahnya, dampak ke masyarakat, dan sejak kapan terjadi..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              rows={5}
+              rows={4}
               required
             />
           </div>
 
-          <div className="space-y-2 pt-2 border-t border-surface-100">
-            <label className="block text-xs font-semibold text-surface-700">
-              Foto Bukti Kejadian (Maksimal 4 foto)
+          <div className="space-y-3 pt-2 border-t border-surface-100 dark:border-surface-800">
+            <label className="block text-xs font-semibold text-surface-700 dark:text-surface-300">
+              Bukti Foto Kejadian (Maksimal 4 Foto)
             </label>
-            <div className="flex flex-wrap gap-3">
+
+            <div className="flex gap-3 flex-wrap items-center">
               {mediaUrls.map((url, idx) => (
                 <div
                   key={idx}
-                  className="relative w-24 h-24 rounded-lg overflow-hidden border border-surface-200 bg-surface-100 group"
+                  className="relative w-24 h-24 rounded-2xl overflow-hidden border border-surface-200 dark:border-surface-800 bg-surface-100 dark:bg-surface-900 group"
                 >
                   <Image src={url} alt={`Preview ${idx + 1}`} fill className="object-cover" />
                   <button
                     type="button"
                     onClick={() => removeImage(idx)}
-                    className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white hover:bg-red-600 transition-colors"
+                    className="absolute top-1.5 right-1.5 p-1 bg-black/70 rounded-full text-white hover:bg-crimson-600 transition-colors"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -214,7 +214,7 @@ export default function CreateReportPage() {
               ))}
 
               {mediaUrls.length < 4 && (
-                <label className="w-24 h-24 rounded-lg border-2 border-dashed border-surface-300 hover:border-crimson-600 bg-surface-50 hover:bg-crimson-50/20 flex flex-col items-center justify-center cursor-pointer transition-colors text-surface-500 hover:text-crimson-600">
+                <label className="w-24 h-24 rounded-2xl border-2 border-dashed border-surface-300 dark:border-surface-700 hover:border-crimson-600 bg-surface-50 dark:bg-surface-900 hover:bg-crimson-50/20 flex flex-col items-center justify-center cursor-pointer transition-colors text-surface-500 dark:text-surface-400 hover:text-crimson-600">
                   <UploadCloud className="w-6 h-6 mb-1" />
                   <span className="text-[10px] font-semibold">
                     {uploadingImage ? "Unggah..." : "Tambah Foto"}
@@ -231,12 +231,12 @@ export default function CreateReportPage() {
             </div>
           </div>
 
-          <div className="space-y-3 pt-2 border-t border-surface-100">
+          <div className="space-y-3 pt-2 border-t border-surface-100 dark:border-surface-800">
             <div className="flex items-center justify-between">
-              <label className="block text-xs font-semibold text-surface-700">
+              <label className="block text-xs font-semibold text-surface-700 dark:text-surface-300">
                 Pilih Lokasi Kejadian pada Peta
               </label>
-              <span className="text-[11px] text-surface-500 flex items-center gap-1">
+              <span className="text-[11px] text-surface-500 dark:text-surface-400 flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-crimson-600" />
                 <span>Klik atau geser pin pada peta</span>
               </span>
@@ -259,19 +259,19 @@ export default function CreateReportPage() {
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-100">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-100 dark:border-surface-800">
             <Button
               type="button"
               variant="outline"
               onClick={() => setIsPreviewOpen(true)}
               disabled={!title.trim() || !description.trim()}
-              className="gap-1.5"
+              className="gap-1.5 rounded-full"
             >
               <Eye className="w-4 h-4" />
-              <span>Pratinjau Laporan</span>
+              <span>Pratinjau</span>
             </Button>
 
-            <Button type="submit" isLoading={isSubmitting} className="gap-1.5">
+            <Button type="submit" isLoading={isSubmitting} className="gap-1.5 rounded-full font-bold px-6">
               <Send className="w-4 h-4" />
               <span>Publikasikan Laporan</span>
             </Button>
@@ -289,31 +289,31 @@ export default function CreateReportPage() {
             <span className="text-xs font-semibold text-crimson-600 block mb-1">
               {selectedCategoryObj?.name || "Kategori"}
             </span>
-            <h2 className="text-base font-bold text-surface-900 leading-snug">
+            <h2 className="text-base font-bold text-surface-900 dark:text-white leading-snug">
               {title || "Judul Laporan"}
             </h2>
-            <p className="text-xs text-surface-500 mt-0.5">{address || "Alamat belum diisi"}</p>
+            <p className="text-xs text-surface-500 dark:text-surface-400 mt-0.5">{address || "Alamat belum diisi"}</p>
           </div>
 
-          <p className="text-xs text-surface-700 whitespace-pre-line leading-relaxed">
+          <p className="text-xs text-surface-700 dark:text-surface-300 whitespace-pre-line leading-relaxed">
             {description || "Deskripsi laporan belum diisi."}
           </p>
 
           {mediaUrls.length > 0 && (
             <div className="grid grid-cols-2 gap-2">
               {mediaUrls.map((url, i) => (
-                <div key={i} className="relative aspect-video rounded overflow-hidden">
+                <div key={i} className="relative aspect-video rounded-xl overflow-hidden">
                   <Image src={url} alt="Pratinjau foto" fill className="object-cover" />
                 </div>
               ))}
             </div>
           )}
 
-          <div className="flex justify-end gap-2 pt-3 border-t border-surface-100">
-            <Button variant="secondary" size="sm" onClick={() => setIsPreviewOpen(false)}>
+          <div className="flex justify-end gap-2 pt-3 border-t border-surface-100 dark:border-surface-800">
+            <Button variant="secondary" size="sm" className="rounded-full" onClick={() => setIsPreviewOpen(false)}>
               Kembali Mengedit
             </Button>
-            <Button size="sm" onClick={handleSubmit} isLoading={isSubmitting}>
+            <Button size="sm" className="rounded-full font-bold" onClick={handleSubmit} isLoading={isSubmitting}>
               Konfirmasi & Publikasikan
             </Button>
           </div>
